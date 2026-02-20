@@ -2,7 +2,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:objetivos/data/db/isar_service.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
 import 'package:objetivos/presentations/providers/goal_streak_provider.dart';
 import 'package:objetivos/presentations/providers/goals_montly_provider.dart';
@@ -18,7 +17,6 @@ class HomeScreen extends ConsumerWidget {
     final goals = ref.watch(goalsMontlyProvider);
     final goal = goals.value?.first;
     final streak = ref.watch(goalStreakProvider(goal?.id ?? 0));
-    final updateHistory = ref.read(goalsRepositoryProvider).saveGoalHistory;
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -52,7 +50,7 @@ class HomeScreen extends ConsumerWidget {
                 scale: goal.completed ? 0.9 : 1,
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeIn,
-                child: GoalCard(goal: goal, updateHistory: updateHistory),
+                child: GoalCard(goal: goal),
               );
             },
           );
@@ -71,9 +69,8 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class GoalCard extends ConsumerStatefulWidget {
-  final Function(GoalMontly, int) updateHistory;
   final GoalMontly goal;
-  const GoalCard({super.key, required this.goal, required this.updateHistory});
+  const GoalCard({super.key, required this.goal});
 
   @override
   ConsumerState<GoalCard> createState() => _GoalCardState();
@@ -104,23 +101,12 @@ class _GoalCardState extends ConsumerState<GoalCard> {
     await _audio.play(AssetSource('sounds/victory_trumpet.mp3'));
   }
 
-  Future<bool> incrementProgress(GoalMontly monthly) async {
-    final isar = IsarService.isar;
-    bool reached = false;
-
-    await isar.writeTxn(() async {
-      monthly.progress++;
-      if (monthly.progress >= monthly.target) {
-        monthly.completed = true;
-        reached = true;
-      }
-      await isar.goalMontlys.put(monthly);
-    });
-    return reached;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final bestStreak = widget.goal.goal.value!.bestStreak;
+    final incrementProgress = ref
+        .read(goalsRepositoryProvider)
+        .incrementProgress;
     return Stack(
       children: [
         Card(
@@ -137,6 +123,18 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                       style: TextStyle(fontSize: 22),
                     ),
                     Spacer(),
+                    bestStreak == 0
+                        ? SizedBox()
+                        : Row(
+                            children: [
+                              Icon(
+                                Icons.local_fire_department_outlined,
+                                color: Colors.orangeAccent,
+                              ),
+                              SizedBox(width: 3),
+                              Text('Mejor racha $bestStreak'),
+                            ],
+                          ),
                     IconButton(
                       onPressed: () {
                         showDialog(
@@ -194,8 +192,8 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                                   : () async {
                                       final reached = await incrementProgress(
                                         widget.goal,
+                                        1,
                                       );
-                                      widget.updateHistory(widget.goal, 1);
                                       if (reached) {
                                         _confettiController.play();
                                         _playFeedBack();
