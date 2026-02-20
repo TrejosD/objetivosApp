@@ -1,0 +1,8 @@
+Future<void> incrementProgress(GoalMonthly monthly) async {
+  final isar = IsarService.isar;
+
+  await isar.writeTxn(() async {
+    monthly.progress++;
+    await isar.goalMonthlys.put(monthly);
+  });
+}
