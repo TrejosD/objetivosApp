@@ -48,30 +48,6 @@ class GoalRepository {
     }
   }
 
-  Future<GoalStats> getGoalStats(GoalMontly monthly) async {
-    final goal = monthly.goal.value!;
-    final now = DateTime.now();
-    final currentStreak = await getCurrentStreak(goal.id);
-    final completionRate = (monthly.progress / goal.target) * 100;
-    final history = await isar.goalHistorys
-        .filter()
-        .goalIdEqualTo(goal.id)
-        .and()
-        .dateGreaterThan(DateTime(now.year, now.month, 1))
-        .findAll();
-    final totalDelta = history.fold<int>(0, (sum, e) => sum + e.delta);
-    final activeDays = history.length;
-    final double dailyAverage = activeDays == 0 ? 0 : totalDelta / activeDays;
-
-    return GoalStats(
-      currentStreak: currentStreak,
-      bestStreak: goal.bestStreak,
-      activeDays: activeDays,
-      completionRate: completionRate,
-      dailyAverage: dailyAverage,
-    );
-  }
-
   Future<void> updateGoal(Goal goal, String name, int target) async {
     goal
       ..name = name
@@ -126,28 +102,6 @@ class GoalRepository {
     });
   }
 
-  Future<bool> incrementProgress(GoalMontly monthly, int delta) async {
-    bool reached = false;
-    await isar.writeTxn(() async {
-      monthly.progress += delta;
-      if (monthly.progress == monthly.target) {
-        monthly.completed = true;
-        reached = true;
-      }
-      await isar.goalMontlys.put(monthly);
-      final goal = monthly.goal.value!;
-      await saveGoalHistory(goal.id, monthly.progress, delta);
-      final currentStreak = await getCurrentStreak(goal.id);
-      if (currentStreak > goal.bestStreak) {
-        goal.bestStreak = currentStreak;
-        await isar.writeTxn(() async {
-          await isar.goals.put(goal);
-        });
-      }
-    });
-    return reached;
-  }
-
   Future<int> getCurrentStreak(int goalId) async {
     final history = await isar.goalHistorys
         .filter()
@@ -181,5 +135,114 @@ class GoalRepository {
       }
     }
     return streak;
+  }
+
+  Future<GoalStats> getGoalStats(GoalMontly monthly) async {
+    final goal = monthly.goal.value!;
+    final now = DateTime.now();
+    final currentStreak = await getCurrentStreak(goal.id);
+    final completionRate = (monthly.progress / goal.target) * 100;
+    final history = await isar.goalHistorys
+        .filter()
+        .goalIdEqualTo(goal.id)
+        .and()
+        .dateGreaterThan(DateTime(now.year, now.month, 1))
+        .findAll();
+    final totalDelta = history.fold<int>(0, (sum, e) => sum + e.delta);
+    final activeDays = history.length;
+    final double dailyAverage = activeDays == 0 ? 0 : totalDelta / activeDays;
+
+    return GoalStats(
+      currentStreak: currentStreak,
+      bestStreak: goal.bestStreak,
+      activeDays: activeDays,
+      completionRate: completionRate,
+      dailyAverage: dailyAverage,
+    );
+  }
+
+  Future<bool> incrementProgress(GoalMontly monthly, int delta) async {
+    bool reached = false;
+    await isar.writeTxn(() async {
+      monthly.progress += delta;
+      if (monthly.progress == monthly.target) {
+        monthly.completed = true;
+        reached = true;
+      }
+      await isar.goalMontlys.put(monthly);
+      final goal = monthly.goal.value!;
+      await saveGoalHistory(goal.id, monthly.progress, delta);
+      final currentStreak = await getCurrentStreak(goal.id);
+      if (currentStreak > goal.bestStreak) {
+        goal.bestStreak = currentStreak;
+        await isar.writeTxn(() async {
+          await isar.goals.put(goal);
+        });
+      }
+    });
+    return reached;
+  }
+
+  Future<GoalMontly?> getPreviousMonth(GoalMontly current) async {
+    int prevMonth = current.month - 1;
+    int year = current.year;
+
+    if (prevMonth == 0) {
+      prevMonth = 12;
+      year--;
+    }
+
+    return await isar.goalMontlys
+        .filter()
+        .goal((q) => q.idEqualTo(current.goal.value!.id))
+        .and()
+        .yearEqualTo(year)
+        .and()
+        .monthEqualTo(prevMonth)
+        .findFirst();
+  }
+
+  Future<double> getDailyAverage(int goalId) async {
+    final now = DateTime.now();
+
+    final startOfMonth = DateTime(now.year, now.month, 1);
+    final history = await isar.goalHistorys
+        .filter()
+        .goalIdEqualTo(goalId)
+        .and()
+        .dateGreaterThan(startOfMonth)
+        .findAll();
+
+    if (history.isEmpty) return 0;
+    final total = history.fold<int>(0, (sum, e) => sum + e.delta);
+    return total / history.length;
+  }
+
+  Future<int> getActiveDays(int goalId) async {
+    final now = DateTime.now();
+
+    final startOfMonth = DateTime(now.year, now.month, 1);
+
+    return await isar.goalHistorys
+        .filter()
+        .goalIdEqualTo(goalId)
+        .and()
+        .dateGreaterThan(startOfMonth)
+        .count();
+  }
+
+  Future<int> getTotalProgressThisMonth(int goalId) async {
+    final now = DateTime.now();
+
+    final startOfMonth = DateTime(now.year, now.month, 1);
+
+    final history = await isar.goalHistorys
+        .filter()
+        .goalIdEqualTo(goalId)
+        .and()
+        .dateGreaterThan(startOfMonth)
+        .findAll();
+
+    return history.fold<int>(0, (sum, e) => sum + e.delta);
   }
 }
