@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 enum GoalMessageState { motivating, success, victory }
 
+// este provider maneja si los mensajes son motivacionales o se completo el objetivo
 final goalMessageStateProvider = StateNotifierProvider<GoalNotifier, GoalState>(
   (ref) {
     return GoalNotifier();

@@ -1,3 +1,4 @@
+// esta clase nos da el marco para tener organizada la informacion historica de cada objetivo
 class GoalStats {
   final int currentStreak;
   final int bestStreak;

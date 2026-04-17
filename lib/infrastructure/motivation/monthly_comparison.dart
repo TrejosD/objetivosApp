@@ -1,3 +1,4 @@
+// permite comparar el desempeño del usuario en un mismo objetivo de acuerdo al progreso "DEPRECATED"
 class MonthlyComparison {
   final int currentProgress;
   final int previousProgress;

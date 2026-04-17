@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+// clase mantiene las variables de entorno
 class Environment {
   static String androidApiKey = dotenv.env['ANDROID_API_KEY'] ?? 'NO-API-KEY';
   static String androidApiId = dotenv.env['ANDROID_API_ID'] ?? 'NO-API-ID';

@@ -14,6 +14,7 @@ class LocalNotifications {
         ?.requestNotificationsPermission();
   }
 
+  // metodo inicializa y configura local notification service
   static Future<void> initializeLocalNotifications() async {
     // todo probar con defaultIcon
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -30,6 +31,7 @@ class LocalNotifications {
     );
   }
 
+  // metodo inicializa time zone service
   static void initializeTimeZone() async {
     final TimezoneInfo currentTimeZone =
         await FlutterTimezone.getLocalTimezone();
@@ -37,6 +39,7 @@ class LocalNotifications {
     tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
   }
 
+  // metodo setea local notifications para mostrarse en un momento indicado "hora/dia/año"
   static void setScheduledLocalNotification() async {
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     const androidDetails = AndroidNotificationDetails(
@@ -57,6 +60,7 @@ class LocalNotifications {
     );
   }
 
+  // metodo para mostrar las local notification
   static void showLocalNotification({
     required int id,
     String? title,
@@ -67,6 +71,7 @@ class LocalNotifications {
       'channelId',
       'channelName',
       playSound: true,
+      ongoing: true,
       importance: Importance.high,
       priority: Priority.high,
     );

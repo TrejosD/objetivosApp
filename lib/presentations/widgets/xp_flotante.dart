@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// "DEPRECATED"
 class XpFlotante extends StatefulWidget {
   final int xp;
   const XpFlotante({super.key, required this.xp});

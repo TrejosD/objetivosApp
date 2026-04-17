@@ -1,5 +1,6 @@
 enum MomentumType { strong, normal, risk }
 
+// clase momentum nos permite cambiar el tipo de mensajes motivaciones que mostramos
 class Momentum {
   final MomentumType type;
   final int requiredStreak;

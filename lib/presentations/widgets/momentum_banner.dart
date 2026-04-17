@@ -13,6 +13,8 @@ import 'package:objetivos/presentations/providers/movitation_service_provider.da
 import 'package:objetivos/presentations/providers/sound_actived_provider.dart';
 import 'package:objetivos/presentations/screens/home_screen.dart';
 
+// este widget muestra mensajes motivacionales de acuerdo al desempeño del usuario
+// este widget se muestra de manera automatica por unos segundos.
 class MomentumBanner extends ConsumerStatefulWidget {
   final GoalMontly monthly;
   const MomentumBanner({super.key, required this.monthly});

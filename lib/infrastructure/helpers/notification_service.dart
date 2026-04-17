@@ -1,37 +1,37 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:objetivos/config/local_notifications/local_notifications.dart';
 import 'package:objetivos/domain/entitites/push_messages.dart';
 
+// control y manejo de las push notificaions
 class NotificationService {
   final FirebaseMessaging messaging;
-  NotificationService(this.messaging);
-
-  // todo necesito un stado para las notificaciones, donde tener la autorizacion y la lista de notificaciones
+  final void Function({
+    required int id,
+    String? title,
+    String? body,
+    String? data,
+  })
+  localNotifications;
+  final Future<void> Function() requestLocalNotificationPermission;
+  NotificationService(
+    this.messaging,
+    this.localNotifications,
+    this.requestLocalNotificationPermission,
+  );
+  // inicializar las push notifications perdir permisos, obtener el token...
   Future<void> init() async {
     await _requestPermission();
     _onForegroundMessage();
     _getToken();
   }
 
+  // metodo estatico, maneja las push notifications cuando app esta cerrada "Background"
   static Future<void> firebaseMessagingBackgroundHandler(
     RemoteMessage message,
   ) async {
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
     await Firebase.initializeApp();
-    final notification = PushMessages(
-      messageId: message.messageId ?? '',
-      title: message.notification?.title ?? '',
-      body: message.notification?.body ?? '',
-      sentDate: message.sentTime ?? DateTime.now(),
-    );
-    LocalNotifications.showLocalNotification(
-      id: 7,
-      title: notification.title,
-      body: notification.body,
-      data: notification.data.toString(),
-    );
 
     print("Handling a background message: ${message.messageId}");
   }
@@ -48,10 +48,11 @@ class NotificationService {
       sound: true,
     );
 
-    await LocalNotifications.requestLocalNotificationPermissions();
+    await requestLocalNotificationPermission();
     print(settings);
   }
 
+  // metodo estatico, maneja las push notifications como local Notifications
   void _handleRemoteMessage(RemoteMessage message) {
     int idNumber = 0;
     final notification = PushMessages(
@@ -61,7 +62,7 @@ class NotificationService {
       body: message.notification!.body ?? '',
       sentDate: message.sentTime ?? DateTime.now(),
     );
-    LocalNotifications.showLocalNotification(
+    localNotifications(
       id: idNumber++,
       body: notification.body,
       data: notification.data.toString(),
@@ -69,6 +70,7 @@ class NotificationService {
     );
   }
 
+  // metodo estatico, maneja las push notifications cuando app esta abierta "foreground"
   void _onForegroundMessage() {
     FirebaseMessaging.onMessage.listen(_handleRemoteMessage);
     // await FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -76,6 +78,7 @@ class NotificationService {
     // });
   }
 
+  // metodo imprime el FCMToken
   Future<void> _getToken() async {
     final token = await messaging.getToken();
     print('FCM Token $token');

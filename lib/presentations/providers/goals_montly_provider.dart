@@ -3,6 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:objetivos/data/db/isar_service.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
 
+// este stream provee la lista de objetivos que puede ver el usuario
 final goalsMontlyProvider = StreamProvider<List<GoalMontly>>((ref) {
   final now = DateTime.now();
 

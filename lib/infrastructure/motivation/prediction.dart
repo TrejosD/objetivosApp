@@ -1,3 +1,4 @@
+// clase prediction "DEPRECATED"
 class Prediction {
   final bool willComplete;
   final double expectedProgress;

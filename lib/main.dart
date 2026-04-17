@@ -17,11 +17,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // inicializar Isar "Local DB"
   await IsarService.init();
+  // inicializar sharedPreferences "Save settings"
   await SharedPreferencesService.getPreference();
+  // inicializar EasyLocation "Translate app - GetLocation"
   await EasyLocalization.ensureInitialized();
+  // inicializar dotEnv. "Environment"
   await dotenv.load(fileName: ".env");
+  // inicializar localNotifications.
   await LocalNotifications.initializeLocalNotifications();
+  // inicializar FireBase | Notifications services
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(
     NotificationService.firebaseMessagingBackgroundHandler,
@@ -29,6 +35,7 @@ void main() async {
   final prefs = SharedPreferencesService.prefs;
   final String? savedLocale = prefs.getString('locale');
   runApp(
+    // lenguajes soportados por el app
     EasyLocalization(
       supportedLocales: [
         Locale('es', 'LA'),
@@ -51,7 +58,10 @@ class MyApp extends ConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, ref) {
+    // settings brightness theme.
+    // detecta tema del telefono
     var brightness = MediaQuery.of(context).platformBrightness;
+    // valor seteado por el usuario "brightness"
     final bOveride = prefs.getString('brightness');
 
     ref.watch(appInitProvider);

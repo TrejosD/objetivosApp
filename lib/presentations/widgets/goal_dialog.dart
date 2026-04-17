@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/presentations/providers/goal_form_state_provider.dart';
 
+// este dialog contiene un form para crear un nuevo objetivo de acuerdo al nombre y la meta que desee el usuario
 class GoalDialog extends ConsumerStatefulWidget {
   final Goal? goal;
   const GoalDialog({super.key, this.goal});

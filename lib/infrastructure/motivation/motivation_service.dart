@@ -8,12 +8,13 @@ import 'package:objetivos/infrastructure/motivation/monthly_comparison.dart';
 import 'package:objetivos/infrastructure/motivation/motivation_result.dart';
 import 'package:objetivos/infrastructure/motivation/prediction.dart';
 
+// este servicio cambia los mensajes motivacionales de acuerdo al desempeño del usuario
 class MotivationService {
   final isar = IsarService.isar;
   final GoalRepository repo;
 
   MotivationService(this.repo);
-
+  // compara el progreso del objetivo con el mes anterior
   Future<MonthlyComparison> compareWithLastMonth(GoalMontly current) async {
     final prev = await repo.getPreviousMonth(current);
 
@@ -25,6 +26,7 @@ class MotivationService {
     );
   }
 
+  // predice si el usuario va a lograr su meta o no
   Future<Prediction> predictGoal(GoalMontly monthly) async {
     final now = DateTime.now();
 
@@ -43,6 +45,7 @@ class MotivationService {
     );
   }
 
+  // cambia los mensajes motivacionales de acuerdo al desempeño "DEPRECATED"
   Future<MotivationResult> analyze(GoalMontly monthly) async {
     final momentum = await calculateMomentum(monthly);
 
@@ -64,6 +67,7 @@ class MotivationService {
     );
   }
 
+  // calcula el momentum dado en el objetivo actual
   Future<Momentum> calculateMomentum(GoalMontly monthly) async {
     final now = DateTime.now();
     final totalDays = DateUtils.getDaysInMonth(now.year, now.month);
@@ -110,6 +114,7 @@ class MotivationService {
     );
   }
 
+  // obtiene el progreso total del mes actual
   Future<int> getTotalProgressThisMonth(int goalId) async {
     final isar = IsarService.isar;
     final now = DateTime.now();

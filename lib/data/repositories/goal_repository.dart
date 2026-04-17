@@ -8,7 +8,7 @@ import 'package:objetivos/infrastructure/entitites/momentum.dart';
 
 class GoalRepository {
   final isar = IsarService.isar;
-
+  // metodo para crear un nuevo objetivo
   Future<Goal> createGoal(String name, int target) async {
     final goal = Goal()
       ..name = name
@@ -20,6 +20,7 @@ class GoalRepository {
     return goal;
   }
 
+  // metodo permite que los objetivos se reinicien automaticamete cada mes
   Future<void> createMonthlyGoals() async {
     final now = DateTime.now();
 
@@ -49,6 +50,7 @@ class GoalRepository {
     }
   }
 
+  // metodo para actualizar un objetivo
   Future<void> updateGoal(Goal goal, String name, int target) async {
     goal
       ..name = name
@@ -71,10 +73,7 @@ class GoalRepository {
     });
   }
 
-  Stream<List<Goal>> watchGoals() {
-    return isar.goals.where().watch(fireImmediately: true);
-  }
-
+  // metodo permite llevar un historico del objetivo
   Future<void> saveGoalHistory(int goalId, int progress, int delta) async {
     final now = DateTime.now();
 
@@ -103,6 +102,7 @@ class GoalRepository {
     });
   }
 
+  // metodo para obtener la racha de cada objetivo
   Future<int> getCurrentStreak(int goalId) async {
     final history = await isar.goalHistorys
         .filter()
@@ -138,6 +138,7 @@ class GoalRepository {
     return streak;
   }
 
+  // metodo para obtener las estadisticas de cada objetivo
   Future<GoalStats> getGoalStats(GoalMontly monthly) async {
     final goal = monthly.goal.value!;
     final now = DateTime.now();
@@ -162,6 +163,7 @@ class GoalRepository {
     );
   }
 
+  // metodo para incrementar progreso del objetivo
   Future<bool> incrementProgress(GoalMontly monthly, int delta) async {
     bool reached = false;
     await isar.writeTxn(() async {
@@ -184,6 +186,7 @@ class GoalRepository {
     return reached;
   }
 
+  // este metodo permite obtener el mes anterior, para el historico, sin errar el cambio de año
   Future<GoalMontly?> getPreviousMonth(GoalMontly current) async {
     int prevMonth = current.month - 1;
     int year = current.year;
@@ -203,6 +206,7 @@ class GoalRepository {
         .findFirst();
   }
 
+  // metodo obtiene el promedio diario de progreso
   Future<double> getDailyAverage(int goalId) async {
     final now = DateTime.now();
 
@@ -219,6 +223,7 @@ class GoalRepository {
     return total / history.length;
   }
 
+  // metodo obtiene la racha diaria de uso del app
   Future<int> getActiveDays(int goalId) async {
     final now = DateTime.now();
 
@@ -232,6 +237,7 @@ class GoalRepository {
         .count();
   }
 
+  // metodo obtiene el total de dias trabajados en un objetivo
   Future<int> getTotalProgressThisMonth(int goalId) async {
     final now = DateTime.now();
     // todo Revisar donde funciona mejor este metodo, si ACa o en Motivation service
@@ -247,6 +253,7 @@ class GoalRepository {
     return history.fold<int>(0, (sum, e) => sum + e.delta);
   }
 
+  // metodo calcula el XP de acuerdo al momentum "DEPRECATED"
   int calculateXP(Momentum m) {
     switch (m.type) {
       case MomentumType.strong:

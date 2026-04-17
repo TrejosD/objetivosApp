@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:objetivos/infrastructure/entitites/momentum.dart';
 
+// barra de progreso animada "DEPRECATED"
 class MomentumBar extends StatelessWidget {
   final Momentum momentum;
   const MomentumBar({super.key, required this.momentum});

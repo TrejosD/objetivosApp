@@ -10,6 +10,7 @@ import 'package:objetivos/presentations/screens/settings_screen.dart';
 import 'package:objetivos/presentations/widgets/goal_dialog.dart';
 import 'package:objetivos/presentations/widgets/momentum_banner.dart';
 
+// este screen muestra una lista de widgets, uno para cada objetivo que el usuario desea
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 

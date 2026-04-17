@@ -6,6 +6,7 @@ import 'package:objetivos/presentations/providers/sound_actived_provider.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// este screen tiene los cambios de configuracion del app, como lenguaje, sonido, tema claro\oscuro
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 

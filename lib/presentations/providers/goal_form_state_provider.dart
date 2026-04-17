@@ -4,6 +4,7 @@ import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/domain/create_initial_montly_goal.dart';
 import 'package:objetivos/presentations/providers/goals_repository_provider.dart';
 
+// servicio que maneja los formularios y sus alertas
 final goalFormStateProvider =
     StateNotifierProvider.autoDispose<GoalFormNotifier, GoalFormState>((ref) {
       return GoalFormNotifier(ref);
@@ -19,6 +20,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
     }
   }
 
+  // metodo maneja el espacio donde se ingresa el nombre del objetivo
   void onNameChanged(String value) {
     String? error;
 
@@ -45,6 +47,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
     state = state.copyWith(target: value, targetError: error);
   }
 
+  // metodo valida el formulario
   void validateAll() {
     String? nameError;
     String? targetError;
@@ -63,6 +66,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
     state = state.copyWith(nameError: nameError, targetError: targetError);
   }
 
+  // metodo envia el formulario y guarda en el DB
   Future<bool> submitForm(Goal? goal) async {
     state = state.copyWith(hasSumitted: true);
     validateAll();
@@ -85,6 +89,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
   }
 }
 
+// estado del formulario
 class GoalFormState {
   final String name;
   final String? nameError;

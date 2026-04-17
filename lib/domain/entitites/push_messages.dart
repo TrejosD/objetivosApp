@@ -1,3 +1,4 @@
+// esta entidad, nos permite sacar informacion necesaria de los push notifications a un formato mas facil de trabajar
 class PushMessages {
   final String messageId;
   final String title;
