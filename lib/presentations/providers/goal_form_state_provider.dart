@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/domain/create_initial_montly_goal.dart';
@@ -23,7 +24,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
 
     if (state.hasSumitted) {
       if (value.trim().isEmpty) {
-        error = 'El nombre es obligatorio';
+        error = 'mandatory-name-error'.tr();
       }
     }
     state = state.copyWith(name: value, nameError: error);
@@ -34,11 +35,11 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
 
     if (state.hasSumitted) {
       if (int.tryParse(value) == null) {
-        error = 'Meta debe ser un numero valido';
+        error = 'goal-needs-value-number-error'.tr();
       } else if (value.isEmpty) {
-        error = 'Campo obligatorio';
+        error = 'empty-field-error'.tr();
       } else if (int.parse(value) <= 0) {
-        error = 'Meta debe ser mayor a 0';
+        error = 'goal-should-more-than-cero-error'.tr();
       }
     }
     state = state.copyWith(target: value, targetError: error);
@@ -49,14 +50,14 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
     String? targetError;
 
     if (state.name.trim().isEmpty) {
-      nameError = 'Campo obligatorio';
+      nameError = 'empty-field-error'.tr();
     }
     if (state.target.isEmpty) {
-      targetError = 'Campo obligatorio';
+      targetError = 'empty-field-error'.tr();
     } else if (int.tryParse(state.target) == null) {
-      targetError = 'Meta debe ser un numero valido';
+      targetError = 'goal-needs-value-number-error'.tr();
     } else if (int.parse(state.target) <= 0) {
-      targetError = 'Meta debe ser mayor a 0';
+      targetError = 'goal-should-more-than-cero-error'.tr();
     }
 
     state = state.copyWith(nameError: nameError, targetError: targetError);

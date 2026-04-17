@@ -4,6 +4,7 @@ import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/data/entities/goal_history.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
 import 'package:objetivos/infrastructure/dtos/dashboard_dto.dart';
+import 'package:objetivos/infrastructure/entitites/momentum.dart';
 
 class GoalRepository {
   final isar = IsarService.isar;
@@ -170,16 +171,16 @@ class GoalRepository {
         reached = true;
       }
       await isar.goalMontlys.put(monthly);
-      final goal = monthly.goal.value!;
-      await saveGoalHistory(goal.id, monthly.progress, delta);
-      final currentStreak = await getCurrentStreak(goal.id);
-      if (currentStreak > goal.bestStreak) {
-        goal.bestStreak = currentStreak;
-        await isar.writeTxn(() async {
-          await isar.goals.put(goal);
-        });
-      }
     });
+    final goal = monthly.goal.value!;
+    final currentStreak = await getCurrentStreak(goal.id);
+    await saveGoalHistory(goal.id, monthly.progress, delta);
+    if (currentStreak > goal.bestStreak) {
+      goal.bestStreak = currentStreak;
+      await isar.writeTxn(() async {
+        await isar.goals.put(goal);
+      });
+    }
     return reached;
   }
 
@@ -233,7 +234,7 @@ class GoalRepository {
 
   Future<int> getTotalProgressThisMonth(int goalId) async {
     final now = DateTime.now();
-
+    // todo Revisar donde funciona mejor este metodo, si ACa o en Motivation service
     final startOfMonth = DateTime(now.year, now.month, 1);
 
     final history = await isar.goalHistorys
@@ -244,5 +245,16 @@ class GoalRepository {
         .findAll();
 
     return history.fold<int>(0, (sum, e) => sum + e.delta);
+  }
+
+  int calculateXP(Momentum m) {
+    switch (m.type) {
+      case MomentumType.strong:
+        return 20;
+      case MomentumType.normal:
+        return 10;
+      case MomentumType.risk:
+        return 5;
+    }
   }
 }

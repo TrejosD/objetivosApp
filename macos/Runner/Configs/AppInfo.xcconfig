@@ -8,7 +8,7 @@
 PRODUCT_NAME = objetivos
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.objetivos
+PRODUCT_BUNDLE_IDENTIFIER = com.diegotrejos.newleaf
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.

@@ -1,0 +1,72 @@
+{    
+    "days-streaks": "{} Winning Streak",
+    "first-objetive":"Create your first goal",
+    "best-streak":"Best Streak {}",
+    "goal-label":"Goal",
+    "progress-label":"Progress",
+    "new-goal":"New goal",
+    "edit-goal":"Edit goal",
+    "name-label":"Name",
+    "montly-goal-label":"Monthly Goal",
+    "dialog-button-cancel":"Cancel",
+    "dialog-button-submit":"Save",
+    "dialog-button-create":"Create",
+    "mandatory-name-error":"Name is Required",
+    "goal-needs-value-number-error":"Goal must be a valid number",
+    "empty-field-error":"Field Required",
+    "goal-should-more-than-cero-error":"Goal must be greater than 0",
+    "success-list":{
+        "1":"Congratulations, you achieved your goal.",
+        "2":"Excellent job.",
+        "3":"You achieved it through your effort.",
+        "4":"Another month building a great habit.",
+        "5":"Your habits get stronger every time.",
+        "6":"You're amazing.",
+        "7":"Great effort, great reward.",
+        "8":"Another goal achieved, let's go for more."
+    },
+    "normal-list":{
+        "1":"You're on the right track. Keep it up.",
+        "2":"Everything is under control. Good progress.",
+        "3":"Step by step, you're getting there.",
+        "4":"You're going exactly where you need to be.",
+        "5":"Consistency > speed. Good job.",
+        "6":"Stay focused, you're doing well.",
+        "7":"Solid progress, keep moving forward.",
+        "8":"You did your part today. We'll continue tomorrow. 💪"
+    },
+    "risk-list":{
+        "1":"You still have time. There are {} days left to get back on track.",
+        "2":"A small push today changes the whole week.",
+        "3":"You have achieved {} consecutive days before. You can do it again.",
+        "4":"It's not a delay, it's an adjustment. We're resuming today.",
+        "5":"You're one task away from getting back on track.",
+        "6":"{} days left. Start today and you'll see the difference.",
+        "7":"Progress isn't perfect, it's constant. Keep going.",
+        "8":"One hard day now and you're back on track. 💪"
+    },
+    "strong-list":{
+        "1":"You're ahead of schedule. If you keep this up, you'll finish in less than {} days.",
+        "2":"Unstoppable! You're way ahead of schedule.",
+        "3":"You're doing great, keep it up.",
+        "4":"At this rate, success comes sooner than expected.",
+        "5":"You are making a difference every day.",
+        "6":"Pure perseverance. You're almost there.",
+        "7":"Ahead of schedule and focused. Great job!",
+        "8":"You're doing better than planned. 🚀"
+    },
+    "localeList":{
+        "1":"auto",
+        "2":"en",
+        "3":"es",
+        "4":"zh",
+        "5":"ja"
+    },
+    "styleList":{
+        "1":"Automatic",
+        "2":"Light",
+        "3":"Dark"
+    },
+    "styleLabel":"Style",
+    "languageLabel":"Language"
+}
