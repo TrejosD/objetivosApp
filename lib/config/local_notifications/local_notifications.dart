@@ -1,4 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotifications {
   static Future<void> requestLocalNotificationPermissions() async {
@@ -14,7 +17,6 @@ class LocalNotifications {
   static Future<void> initializeLocalNotifications() async {
     // todo probar con defaultIcon
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
     const initializationSettingsAndroid = AndroidInitializationSettings(
       'app_icon',
     );
@@ -22,9 +24,36 @@ class LocalNotifications {
     const initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid,
     );
-
+    initializeTimeZone();
     await flutterLocalNotificationsPlugin.initialize(
       settings: initializationSettings,
+    );
+  }
+
+  static void initializeTimeZone() async {
+    final TimezoneInfo currentTimeZone =
+        await FlutterTimezone.getLocalTimezone();
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation(currentTimeZone.identifier));
+  }
+
+  static void setScheduledLocalNotification() async {
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const androidDetails = AndroidNotificationDetails(
+      'channelId',
+      'channelName',
+      playSound: true,
+      channelDescription: 'notification',
+    );
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id: 0,
+      title: 'scheduled title',
+      body: 'scheduled body',
+      scheduledDate: tz.TZDateTime.now(
+        tz.local,
+      ).add(const Duration(seconds: 5)),
+      notificationDetails: NotificationDetails(android: androidDetails),
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
     );
   }
 

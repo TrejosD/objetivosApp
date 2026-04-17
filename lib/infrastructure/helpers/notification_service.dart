@@ -20,6 +20,18 @@ class NotificationService {
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
     await Firebase.initializeApp();
+    final notification = PushMessages(
+      messageId: message.messageId ?? '',
+      title: message.notification?.title ?? '',
+      body: message.notification?.body ?? '',
+      sentDate: message.sentTime ?? DateTime.now(),
+    );
+    LocalNotifications.showLocalNotification(
+      id: 7,
+      title: notification.title,
+      body: notification.body,
+      data: notification.data.toString(),
+    );
 
     print("Handling a background message: ${message.messageId}");
   }
@@ -50,7 +62,7 @@ class NotificationService {
       sentDate: message.sentTime ?? DateTime.now(),
     );
     LocalNotifications.showLocalNotification(
-      id: ++idNumber,
+      id: idNumber++,
       body: notification.body,
       data: notification.data.toString(),
       title: notification.title,
