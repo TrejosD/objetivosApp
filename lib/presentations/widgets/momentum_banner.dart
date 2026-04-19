@@ -8,10 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/data/entities/entities.dart';
 import 'package:objetivos/infrastructure/entitites/momentum.dart';
-import 'package:objetivos/presentations/providers/goal_message_state_provider.dart';
-import 'package:objetivos/presentations/providers/movitation_service_provider.dart';
-import 'package:objetivos/presentations/providers/sound_actived_provider.dart';
+
 import 'package:objetivos/presentations/screens/home_screen.dart';
+
+import '../providers/providers.dart';
 
 // este widget muestra mensajes motivacionales de acuerdo al desempeño del usuario
 // este widget se muestra de manera automatica por unos segundos.

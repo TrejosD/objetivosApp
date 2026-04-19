@@ -1,14 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:objetivos/config/local_notifications/local_notifications.dart';
+import 'package:flutter/material.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
-import 'package:objetivos/presentations/providers/goal_message_state_provider.dart';
-import 'package:objetivos/presentations/providers/goal_streak_provider.dart';
-import 'package:objetivos/presentations/providers/goals_montly_provider.dart';
-import 'package:objetivos/presentations/providers/goals_repository_provider.dart';
+
 import 'package:objetivos/presentations/screens/settings_screen.dart';
-import 'package:objetivos/presentations/widgets/goal_dialog.dart';
-import 'package:objetivos/presentations/widgets/momentum_banner.dart';
+
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
 
 // este screen muestra una lista de widgets, uno para cada objetivo que el usuario desea
 class HomeScreen extends ConsumerWidget {
@@ -205,6 +204,13 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                                             goalMessageStateProvider.notifier,
                                           )
                                           .reset();
+
+                                      // enviar metodo scheduleNotifications
+                                      LocalNotifications.setScheduledLocalNotification(
+                                        title: widget.goal.goal.value!.name,
+                                        body:
+                                            'Estas a tiempo de continuar tu meta',
+                                      );
                                       if (mounted) {
                                         Navigator.push(
                                           context,
