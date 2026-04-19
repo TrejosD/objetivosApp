@@ -40,24 +40,49 @@ class LocalNotifications {
   }
 
   // metodo setea local notifications para mostrarse en un momento indicado "hora/dia/año"
-  static void setScheduledLocalNotification() async {
+  static void setScheduledLocalNotification({
+    int id = 0,
+    required String title,
+    required String body,
+    required int hour,
+    required int minute,
+  }) async {
+    final now = tz.TZDateTime.now(tz.local);
+    final scheduleDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
+
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const androidDetails = AndroidNotificationDetails(
-      'channelId',
-      'channelName',
-      playSound: true,
-      channelDescription: 'notification',
-    );
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id: 0,
-      title: 'scheduled title',
-      body: 'scheduled body',
-      scheduledDate: tz.TZDateTime.now(
-        tz.local,
-      ).add(const Duration(seconds: 5)),
-      notificationDetails: NotificationDetails(android: androidDetails),
-      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: scheduleDate,
+      notificationDetails: NotificationDetails(
+        android: AndroidNotificationDetails(
+          'channelId',
+          'channelName',
+          playSound: true,
+          ongoing: true,
+          channelDescription: 'notification',
+        ),
+      ),
+      // android ScheduleMode permite notificaciones cual el mobile tiene bateria baja.
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      // este si se quiere repetir notificaciones daily | monthly
+      // matchDateTimeComponents: DateTimeComponents.time,
     );
+  }
+
+  Future<void> cancelNotification() async {
+    final flutterNotificationPluggin = FlutterLocalNotificationsPlugin();
+    await flutterNotificationPluggin.cancelAll();
   }
 
   // metodo para mostrar las local notification
