@@ -198,6 +198,12 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                               onPressed: widget.goal.completed
                                   ? null
                                   : () async {
+                                      ref
+                                          .read(
+                                            notificationMessageProvider
+                                                .notifier,
+                                          )
+                                          .getRandomMessage();
                                       await incrementProgress(widget.goal, 1);
                                       ref
                                           .read(
@@ -208,8 +214,9 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                                       // enviar metodo scheduleNotifications
                                       LocalNotifications.setScheduledLocalNotification(
                                         title: widget.goal.goal.value!.name,
-                                        body:
-                                            'Estas a tiempo de continuar tu meta',
+                                        body: ref
+                                            .read(notificationMessageProvider)
+                                            .message,
                                       );
                                       if (mounted) {
                                         Navigator.push(

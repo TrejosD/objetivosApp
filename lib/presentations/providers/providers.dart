@@ -8,3 +8,4 @@ export 'goals_repository_provider.dart';
 export 'movitation_service_provider.dart';
 export 'notifications_service_provider.dart';
 export 'sound_actived_provider.dart';
+export 'notification_message_provider.dart';
