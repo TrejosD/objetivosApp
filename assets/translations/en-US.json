@@ -68,5 +68,19 @@
         "3":"Dark"
     },
     "styleLabel":"Style",
-    "languageLabel":"Language"
+    "languageLabel":"Language",
+    "settings-title":"Settings",
+    "settings-sound-label":"Actived Sound",
+    "settings-privacy-policy":"Privacy Policy",
+    "notification-list":{
+        "1":"You still have time to keep working toward your goal.",
+        "2":"One more step today.",
+        "3":"Don't break the streak.",
+        "4":"Your goal is waiting for you.",
+        "5":"Today counts too.",
+        "6":"Keep it up.",
+        "7":"Small effort, big progress.",
+        "8":"Do it now—it won't take long.",
+        "9":"Your future self will thank you for it."
+    }
 }

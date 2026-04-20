@@ -216,7 +216,8 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                                         title: widget.goal.goal.value!.name,
                                         body: ref
                                             .read(notificationMessageProvider)
-                                            .message,
+                                            .message
+                                            .tr(),
                                       );
                                       if (mounted) {
                                         Navigator.push(

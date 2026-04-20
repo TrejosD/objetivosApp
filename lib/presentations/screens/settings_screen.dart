@@ -17,6 +17,8 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    final rowAlignment = MainAxisAlignment.start;
+    final textStyle = TextStyle(fontSize: 18);
     final isSoundActived = ref.watch(soundActivedProvider);
     final prefs = SharedPreferencesService.prefs;
     final String? savedLocale = prefs.getString('locale');
@@ -34,68 +36,90 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       'localeList.5'.tr(),
     ];
     return Scaffold(
-      appBar: AppBar(title: Text('newLeaf - Settings')),
-      body: Column(
-        children: [
-          Row(
-            children: [
-              Icon(Icons.sunny),
-              Text('styleLabel'.tr()),
-              DropdownMenu(
-                initialSelection: savedStyle ?? 'styleList.1'.tr(),
-                dropdownMenuEntries: styleItems.map((item) {
-                  return DropdownMenuEntry(value: item, label: item);
-                }).toList(),
-                onSelected: (item) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  if (item == 'styleList.1'.tr()) {
-                    await prefs.remove('brightness');
-                    Restart.restartApp();
-                  } else {
-                    await prefs.setString('brightness', item.toString());
-                    Restart.restartApp();
-                  }
-                },
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.language_rounded),
-              Text('languageLabel'.tr()),
-              DropdownMenu(
-                initialSelection: savedLocale ?? 'localeList.1'.tr(),
-                onSelected: (locale) async {
-                  final prefs = await SharedPreferences.getInstance();
-                  if (locale == 'localeList.1'.tr()) {
-                    prefs.remove('locale');
-                    Restart.restartApp();
-                  } else {
-                    await prefs.setString('locale', locale.toString());
-                    Restart.restartApp();
-                  }
-                },
-                dropdownMenuEntries: localeList.map((locale) {
-                  return DropdownMenuEntry(value: locale, label: locale);
-                }).toList(),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Icon(Icons.speaker_phone_outlined),
-              Text('Sonido Activado'),
-              Switch(
-                value: isSoundActived,
-                onChanged: (value) {
-                  setState(() {
-                    ref.read(soundActivedProvider.notifier).state = value;
-                  });
-                },
-              ),
-            ],
-          ),
-        ],
+      appBar: AppBar(title: Text('settings-title'.tr())),
+      // todo traducion tag
+      body: Padding(
+        padding: const EdgeInsets.all(26),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: rowAlignment,
+              children: [
+                Icon(Icons.sunny),
+                SizedBox(width: 10),
+                Text('styleLabel'.tr(), style: textStyle),
+                Spacer(),
+                DropdownMenu(
+                  width: 110,
+                  initialSelection: savedStyle ?? 'styleList.1'.tr(),
+                  dropdownMenuEntries: styleItems.map((item) {
+                    return DropdownMenuEntry(value: item, label: item);
+                  }).toList(),
+                  onSelected: (item) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    if (item == 'styleList.1'.tr()) {
+                      await prefs.remove('brightness');
+                      Restart.restartApp();
+                    } else {
+                      await prefs.setString('brightness', item.toString());
+                      Restart.restartApp();
+                    }
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 18),
+            Row(
+              mainAxisAlignment: rowAlignment,
+              children: [
+                Icon(Icons.language_rounded),
+                SizedBox(width: 10),
+                Text('languageLabel'.tr(), style: textStyle),
+                Spacer(),
+                DropdownMenu(
+                  width: 110,
+                  initialSelection: savedLocale ?? 'localeList.1'.tr(),
+                  onSelected: (locale) async {
+                    final prefs = await SharedPreferences.getInstance();
+                    if (locale == 'localeList.1'.tr()) {
+                      prefs.remove('locale');
+                      Restart.restartApp();
+                    } else {
+                      await prefs.setString('locale', locale.toString());
+                      Restart.restartApp();
+                    }
+                  },
+                  dropdownMenuEntries: localeList.map((locale) {
+                    return DropdownMenuEntry(value: locale, label: locale);
+                  }).toList(),
+                ),
+              ],
+            ),
+            SizedBox(height: 18),
+            Row(
+              mainAxisAlignment: rowAlignment,
+              children: [
+                Icon(Icons.speaker_phone_outlined),
+                SizedBox(width: 10),
+                Text('settings-sound-label'.tr(), style: textStyle),
+                Spacer(),
+
+                Switch(
+                  value: isSoundActived,
+                  onChanged: (value) {
+                    setState(() {
+                      ref.read(soundActivedProvider.notifier).state = value;
+                    });
+                  },
+                ),
+              ],
+            ),
+            SizedBox(height: 18),
+            Text('settings-privacy-policy'.tr(), style: textStyle),
+
+            // todo colocar imagen bonito para llenar
+          ],
+        ),
       ),
       // cada setting seria un row ( icon / text / option)
     );

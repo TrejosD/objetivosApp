@@ -68,5 +68,19 @@
         "3":"Oscuro"
     },
     "styleLabel":"Estilo",
-    "languageLabel":"Lenguaje"
+    "languageLabel":"Lenguaje",
+    "settings-title":"Configuración",
+    "settings-sound-label":"Sonido Activado",
+    "settings-privacy-policy":"Politica de Privacidad",
+    "notification-list":{
+    "1":"Estás a tiempo de continuar tu meta.",
+    "2":"Un paso más hoy.",
+    "3":"No rompas la racha.",
+    "4":"Tu meta te espera.",
+    "5":"Hoy también cuenta.",
+    "6":"Sigue el hábito.",
+    "7":"Pequeño esfuerzo, gran progreso.",
+    "8":"Hazlo ahora, te tomará poco.",
+    "9":"Tu yo de mañana lo agradecerá."
+    }
 }

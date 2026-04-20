@@ -15,15 +15,15 @@ class NotificationMessageNotifier
   NotificationMessageNotifier() : super(NotificationMessageState(message: ''));
 
   final List<String> messageList = [
-    'Estás a tiempo de continuar tu meta.',
-    'Un paso más hoy.',
-    'No rompas la racha.',
-    'Tu meta te espera.',
-    'Hoy también cuenta.',
-    'Sigue el hábito.',
-    'Pequeño esfuerzo, gran progreso.',
-    'Hazlo ahora, te tomará poco.',
-    'Tu yo de mañana lo agradecerá.',
+    'notification-list.1',
+    'notification-list.2',
+    'notification-list.3',
+    'notification-list.4',
+    'notification-list.5',
+    'notification-list.6',
+    'notification-list.7',
+    'notification-list.8',
+    'notification-list.9',
   ];
   String getRandom(List<String> list) {
     return list[Random().nextInt(list.length)];
