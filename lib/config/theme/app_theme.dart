@@ -27,9 +27,24 @@ class AppTheme {
   // metodo que llama el app para mostrar el tema
   ThemeData theme() {
     return ThemeData(
-      brightness: brighnessOveride != null
-          ? overrideTheme(brighnessOveride)
-          : brightness,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.purple,
+        primary: Colors.purple,
+        secondary: Colors.blueAccent,
+        brightness: brighnessOveride != null
+            ? overrideTheme(brighnessOveride)
+            : brightness,
+      ),
+      cardTheme: CardThemeData(
+        color: Colors.grey,
+        shadowColor: Colors.purple.shade100,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.purple.shade200,
+          foregroundColor: Colors.white,
+        ),
+      ),
     );
   }
 }

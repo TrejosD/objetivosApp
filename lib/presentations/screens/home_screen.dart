@@ -112,7 +112,7 @@ class _GoalCardState extends ConsumerState<GoalCard> {
     return Stack(
       children: [
         Card(
-          color: widget.goal.completed ? Colors.green.shade200 : null,
+          color: widget.goal.completed ? Colors.green.shade300 : null,
           elevation: 6,
           child: Padding(
             padding: const EdgeInsets.all(9.0),
