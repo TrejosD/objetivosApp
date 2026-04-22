@@ -43,6 +43,7 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.purple.shade200,
           foregroundColor: Colors.white,
+          shadowColor: Colors.black12,
         ),
       ),
     );

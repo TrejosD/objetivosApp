@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/infrastructure/helpers/shared_preferences_service.dart';
 import 'package:objetivos/presentations/providers/sound_actived_provider.dart';
+import 'package:objetivos/presentations/screens/privacy_policy_screen.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -115,7 +116,16 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ],
             ),
             SizedBox(height: 18),
-            Text('settings-privacy-policy'.tr(), style: textStyle),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PrivacyPolicyScreen(),
+                  ),
+                );
+              },
+              child: Text('settings-privacy-policy'.tr(), style: textStyle),
+            ),
 
             // todo colocar imagen bonito para llenar
           ],
