@@ -16,6 +16,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
               'NewLeaf we respects your privacy. This Privacy Policy explains how our mobile application (the "App"), developed with Flutter and distributed through the Google Play Store, handles your information.',
             ),
             // titulo
+            Divider(),
             Text('1. Information We Collect'),
             Text(
               'We do not collect or store personal data on external servers.',
@@ -29,16 +30,20 @@ class PrivacyPolicyScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'User-created content (e.g., goals, notes, progress data)',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'User-created content (e.g., goals, notes, progress data)',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('App preferences and settings'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(child: Text('App preferences and settings')),
                   ],
                 ),
               ],
@@ -49,21 +54,38 @@ class PrivacyPolicyScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('Personal identifiable information (PII)'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text('Personal identifiable information (PII)'),
+                    ),
                   ],
                 ),
-                Row(children: [Icon(Icons.circle), Text('Location data')]),
-                Row(children: [Icon(Icons.circle), Text('Contacts')]),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('Financial or sensitive data'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(child: Text('Location data')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(child: Text('Contacts')),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(child: Text('Financial or sensitive data')),
                   ],
                 ),
               ],
             ),
             // titulo
+            Divider(),
             Text('2. Local Data Storage'),
             // subtitulos
             Text(
@@ -73,29 +95,37 @@ class PrivacyPolicyScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('We do not have access to this data'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(child: Text('We do not have access to this data')),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'We do not transmit this data to any external servers',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'We do not transmit this data to any external servers',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'If you uninstall the App, your data may be permanently deleted',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'If you uninstall the App, your data may be permanently deleted',
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
             // titulo
+            Divider(),
             Text('3. Permissions We Use'),
 
             Text(
@@ -108,16 +138,24 @@ class PrivacyPolicyScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'Basic app functionality if needed by system components',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'Basic app functionality if needed by system components',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('No user data is transmitted to external servers'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'No user data is transmitted to external servers',
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -128,8 +166,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
             Text('Used to:'),
             Row(
               children: [
-                Icon(Icons.circle),
-                Text('Restore scheduled notifications after device restart'),
+                Icon(Icons.circle, size: 10),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Restore scheduled notifications after device restart',
+                  ),
+                ),
               ],
             ),
             Text(
@@ -139,9 +182,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
             Text('Used to:'),
             Row(
               children: [
-                Icon(Icons.circle),
-                Text(
-                  'Schedule precise reminders and notifications related to your activities in the App',
+                Icon(Icons.circle, size: 10),
+                SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    'Schedule precise reminders and notifications related to your activities in the App',
+                  ),
                 ),
               ],
             ),
@@ -149,32 +195,42 @@ class PrivacyPolicyScreen extends StatelessWidget {
               'We do not use these permissions for tracking, profiling, or advertising.',
             ),
             // titutlo
+            Divider(),
             Text('4. Data Sharing'),
             Text(
               'We do not share, sell, or transfer any user data to third parties.',
             ),
-            // titulos
+            Divider(),
             Text('5. Data Security'),
             Text('Since all data is stored locally:'),
             Column(
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'You are responsible for maintaining the security of your device',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'You are responsible for maintaining the security of your device',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text('We do not transmit or store your data externally'),
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'We do not transmit or store your data externally',
+                      ),
+                    ),
                   ],
                 ),
               ],
             ),
             // titulo
+            Divider(),
             Text('6. Third-Party Services'),
             Text(
               'This App does not use third-party services that collect user data.',
@@ -186,25 +242,34 @@ class PrivacyPolicyScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'You can delete your data by clearing the app storage or uninstalling the App',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'You can delete your data by clearing the app storage or uninstalling the App',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'You can disable notifications at any time from your device settings',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'You can disable notifications at any time from your device settings',
+                      ),
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    Icon(Icons.circle),
-                    Text(
-                      'You can revoke permissions through your device settings',
+                    Icon(Icons.circle, size: 10),
+                    SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        'You can revoke permissions through your device settings',
+                      ),
                     ),
                   ],
                 ),
@@ -228,7 +293,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
             ),
             Text('Email: d.trejosh@gmail.com'),
           ],
-          // todo colocar un divider entre cada seccion
         ),
       ),
     );
