@@ -73,6 +73,20 @@ class GoalRepository {
     });
   }
 
+  Future<void> deleteGoal(Goal goal) async {
+    await isar.writeTxn(() async {
+      // eliminar goalMonthly
+      await isar.goalMontlys
+          .filter()
+          .goal((q) => q.idEqualTo(goal.id))
+          .deleteAll();
+      // eliminar goalHistory
+      await isar.goalHistorys.filter().goalIdEqualTo(goal.id).deleteAll();
+      // eliminar goal
+      await isar.goals.delete(goal.id);
+    });
+  }
+
   // metodo permite llevar un historico del objetivo
   Future<void> saveGoalHistory(int goalId, int progress, int delta) async {
     final now = DateTime.now();

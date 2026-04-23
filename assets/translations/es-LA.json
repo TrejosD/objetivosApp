@@ -11,6 +11,7 @@
     "dialog-button-cancel":"Cancelar",
     "dialog-button-submit":"Guardar",
     "dialog-button-create":"Crear",
+    "dialog-button-accept":"Aceptar",
     "mandatory-name-error":"EL Nombre es obligatorio",
     "goal-needs-value-number-error":"Meta debe ser un numero valido",
     "empty-field-error":"Campo obligatorio",

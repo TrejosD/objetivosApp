@@ -11,6 +11,7 @@
     "dialog-button-cancel":"Cancel",
     "dialog-button-submit":"Save",
     "dialog-button-create":"Create",
+    "dialog-button-accept":"Confirm",
     "mandatory-name-error":"Name is Required",
     "goal-needs-value-number-error":"Goal must be a valid number",
     "empty-field-error":"Field Required",

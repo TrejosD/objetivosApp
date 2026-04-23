@@ -11,6 +11,7 @@
     "dialog-button-cancel":"キャンセル",
     "dialog-button-submit":"保存",
     "dialog-button-create":"作成",
+    "dialog-button-accept":"確認",
     "mandatory-name-error":"「名前」の入力は必須です",
     "goal-needs-value-number-error":"目標には有効な数値を入力してください",
     "empty-field-error":"必須項目",

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/config/local_notifications/local_notifications.dart';
+import 'package:flutter_popup/flutter_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
 
@@ -143,15 +144,41 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                               ),
                             ],
                           ),
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) =>
-                              GoalDialog(goal: widget.goal.goal.value),
-                        );
-                      },
-                      icon: Icon(Icons.more_vert),
+                    CustomPopup(
+                      content: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 4,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      GoalDialog(goal: widget.goal.goal.value),
+                                );
+                              },
+                              icon: Text('Editar'),
+                            ),
+                            IconButton(
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => DeleteGoalDialog(
+                                    goal: widget.goal.goal.value!,
+                                  ),
+                                );
+                              },
+                              onPressed: () {},
+                              icon: Text('Borrar'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      child: Icon(Icons.more_vert),
                     ),
                   ],
                 ),

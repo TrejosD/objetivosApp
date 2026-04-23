@@ -11,6 +11,7 @@
     "dialog-button-cancel":"取消",
     "dialog-button-submit":"保存",
     "dialog-button-create":"创建",
+    "dialog-button-accept":"确认",
     "mandatory-name-error":"姓名为必填项",
     "goal-needs-value-number-error":"目标必须是一个有效的数字",
     "empty-field-error":"必填字段",

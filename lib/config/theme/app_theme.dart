@@ -46,6 +46,9 @@ class AppTheme {
           shadowColor: Colors.black12,
         ),
       ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(backgroundColor: Colors.grey),
+      ),
     );
   }
 }
