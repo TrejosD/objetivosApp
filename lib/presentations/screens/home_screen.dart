@@ -42,14 +42,22 @@ class HomeScreen extends ConsumerWidget {
         actions: [
           streak == 0
               ? SizedBox()
-              : Row(
-                  children: [
-                    Icon(
-                      Icons.local_fire_department_outlined,
-                      color: Colors.orange,
+              : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.local_fire_department_outlined,
+                          color: Colors.orange,
+                        ),
+                        Text(
+                          plural('days-streaks', 1, args: [streak.toString()]),
+                        ),
+                      ],
                     ),
-                    Text(plural('days-streaks', 1, args: [streak.toString()])),
-                  ],
+                  ),
                 ),
         ],
         title: Text('new Leaf'),
@@ -145,15 +153,19 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                             ],
                           ),
                     CustomPopup(
+                      barrierColor: Colors.black38,
                       content: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
+                          horizontal: 8,
                           vertical: 4,
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.purple.shade300,
+                              ),
                               onPressed: () {
                                 showDialog(
                                   context: context,
