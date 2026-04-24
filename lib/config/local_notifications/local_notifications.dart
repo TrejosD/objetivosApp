@@ -46,7 +46,7 @@ class LocalNotifications {
     required String body,
   }) async {
     final now = tz.TZDateTime.now(tz.local);
-    final scheduleDate = now.add(Duration(hours: 23));
+    final scheduleDate = now.add(Duration(hours: 23, minutes: 22));
 
     final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 

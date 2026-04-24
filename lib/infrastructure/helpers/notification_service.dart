@@ -32,13 +32,11 @@ class NotificationService {
     // If you're going to use other Firebase services in the background, such as Firestore,
     // make sure you call `initializeApp` before using other Firebase services.
     await Firebase.initializeApp();
-
-    print("Handling a background message: ${message.messageId}");
   }
 
   // llamar este metodo, para solicitar permisos de notificaciones
   Future<void> _requestPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
+    await messaging.requestPermission(
       alert: true,
       announcement: false,
       badge: true,
@@ -49,7 +47,6 @@ class NotificationService {
     );
 
     await requestLocalNotificationPermission();
-    print(settings);
   }
 
   // metodo estatico, maneja las push notifications como local Notifications
@@ -80,7 +77,6 @@ class NotificationService {
 
   // metodo imprime el FCMToken
   Future<void> _getToken() async {
-    final token = await messaging.getToken();
-    print('FCM Token $token');
+    await messaging.getToken();
   }
 }
