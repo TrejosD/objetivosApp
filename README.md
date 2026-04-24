@@ -32,3 +32,9 @@ dart run flutter_native_splash:create
 ```
 dart run change_app_package_name:main "com.tunombre.appname"
 ```
+
+## Para cambiar el icono del app
+
+```
+dart run flutter_launcher_icons
+```
