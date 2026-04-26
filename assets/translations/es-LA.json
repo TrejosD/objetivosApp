@@ -1,0 +1,87 @@
+{    
+    "days-streaks": "{} Dias de racha",
+    "first-objetive":"Crea tu primer objetivo",
+    "best-streak":"Mejor racha {}",
+    "goal-label":"Meta",
+    "progress-label":"Progreso",
+    "new-goal":"Nueva meta",
+    "edit-goal":"Editar meta",
+    "name-label":"Nombre",
+    "montly-goal-label":"Meta mensual",
+    "dialog-button-cancel":"Cancelar",
+    "dialog-button-submit":"Guardar",
+    "dialog-button-create":"Crear",
+    "dialog-button-accept":"Aceptar",
+    "mandatory-name-error":"EL Nombre es obligatorio",
+    "goal-needs-value-number-error":"Meta debe ser un numero valido",
+    "empty-field-error":"Campo obligatorio",
+    "goal-should-more-than-cero-error":"Meta debe ser mayor a 0",
+    "success-list":{
+        "1":"Felicidades lograste tu meta",
+        "2":"Excelente trabajo",
+        "3":"Con tu esfuerzo lo lograste",
+        "4":"Otro mes logrando un gran habito",
+        "5":"Tus hábitos se vuelven más fuertes cada vez",
+        "6":"Eres increíble",
+        "7":"Gran esfuerzo, gran recompensa",
+        "8":"Otra meta cumplida vamos por más"
+    },
+    "normal-list":{
+        "1":"Vas en buen ritmo. Sigue así.",
+        "2":"Todo bajo control. Buen progreso.",
+        "3":"Paso a paso, lo estás logrando.",
+        "4":"Vas justo donde necesitas estar.",
+        "5":"Constancia > velocidad. Buen trabajo.",
+        "6":"Mantén el enfoque, vas bien.",
+        "7":"Progreso sólido, sigue avanzando.",
+        "8":"Hoy cumpliste. Mañana seguimos. 💪"
+    },
+    "risk-list":{
+        "1":"Aún estás a tiempo. Quedan {} días para retomar el ritmo",
+        "2":"Un pequeño empujón hoy cambia toda la semana.",
+        "3":"Has logrado {} días seguidos antes. Puedes hacerlo otra vez.",
+        "4":"No es atraso, es ajuste. Hoy retomamos.",
+        "5":"Estás a una tarea de volver al ritmo.",
+        "6":"Quedan {} días. Empieza hoy y verás la diferencia.",
+        "7":"El progreso no es perfecto, es constante. Sigue.",
+        "8":"Un día fuerte ahora y vuelves al plan. 💪"
+    },
+    "strong-list":{
+        "1":"Vas adelantado. Si sigues así, terminaras antes de {} días.",
+        "2":"¡Imparable! Estás muy por encima del plan.",
+        "3":"Vas excelente, sigue así.",
+        "4":"A este ritmo, el éxito llega antes de lo esperado.",
+        "5":"Estás marcando la diferencia cada día.",
+        "6":"Constancia pura. Ya casi lo tienes.",
+        "7":"Adelantado y enfocado. ¡Gran trabajo!",
+        "8":"Lo estás haciendo mejor de lo planeado. 🚀"
+    },
+    "localeList":{
+        "1":"auto",
+        "2":"en",
+        "3":"es",
+        "4":"zh",
+        "5":"ja"
+    },
+    "styleList":{
+        "1":"Automatico",
+        "2":"Claro",
+        "3":"Oscuro"
+    },
+    "styleLabel":"Estilo",
+    "languageLabel":"Lenguaje",
+    "settings-title":"Configuración",
+    "settings-sound-label":"Sonido Activado",
+    "settings-privacy-policy":"Politica de Privacidad",
+    "notification-list":{
+    "1":"Estás a tiempo de continuar tu meta.",
+    "2":"Un paso más hoy.",
+    "3":"No rompas la racha.",
+    "4":"Tu meta te espera.",
+    "5":"Hoy también cuenta.",
+    "6":"Sigue el hábito.",
+    "7":"Pequeño esfuerzo, gran progreso.",
+    "8":"Hazlo ahora, te tomará poco.",
+    "9":"Tu yo de mañana lo agradecerá."
+    }
+}

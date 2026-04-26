@@ -4,7 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
+  flutter_timezone
   isar_flutter_libs
+  restart_app
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST

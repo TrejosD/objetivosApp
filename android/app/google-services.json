@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "92418592203",
+    "project_id": "newleaf-ac147",
+    "storage_bucket": "newleaf-ac147.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:92418592203:android:b98dc0b89f06fb03ed7a4e",
+        "android_client_info": {
+          "package_name": "com.diegotrejos.newleaf"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtdUO_dtbn24wXW5ZwTW6ouefH5Du__3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

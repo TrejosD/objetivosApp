@@ -1,48 +1,71 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:confetti/confetti.dart';
-import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:objetivos/data/db/isar_service.dart';
+import 'package:objetivos/config/local_notifications/local_notifications.dart';
+import 'package:flutter_popup/flutter_popup.dart';
+import 'package:flutter/material.dart';
 import 'package:objetivos/data/entities/goal_montly.dart';
-import 'package:objetivos/presentations/providers/goal_streak_provider.dart';
-import 'package:objetivos/presentations/providers/goals_montly_provider.dart';
-import 'package:objetivos/presentations/providers/goals_repository_provider.dart';
-import 'package:objetivos/presentations/widgets/goal_dialog.dart';
-import 'package:vibration/vibration.dart';
 
+import 'package:objetivos/presentations/screens/settings_screen.dart';
+
+import '../providers/providers.dart';
+import '../widgets/widgets.dart';
+
+// este screen muestra una lista de widgets, uno para cada objetivo que el usuario desea
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
     final goals = ref.watch(goalsMontlyProvider);
-    final goal = goals.value?.first;
-    final streak = ref.watch(goalStreakProvider(goal?.id ?? 0));
-    final updateHistory = ref.read(goalsRepositoryProvider).saveGoalHistory;
+    final goal = goals.value;
+    late int streak = 0;
+    if (goal == null || goal.isEmpty) {
+      streak = 0;
+    } else {
+      final racha = ref.watch(goalStreakProvider(goal.first.id));
+      streak = racha.when(
+        data: (int data) => data,
+        error: (_, __) => 0,
+        loading: () => 0,
+      );
+    }
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (context) => SettingsScreen()));
+          },
+          icon: Icon(Icons.settings),
+        ),
         actions: [
-          streak.when(
-            data: (streak) => streak == 0
-                ? SizedBox()
-                : Row(
-                    children: [
-                      Icon(Icons.local_fire_department, color: Colors.orange),
-                      SizedBox(width: 3),
-                      Text('$streak dias'),
-                      SizedBox(width: 18),
-                    ],
+          streak == 0
+              ? SizedBox()
+              : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.local_fire_department_outlined,
+                          color: Colors.orange,
+                        ),
+                        Text(
+                          plural('days-streaks', 1, args: [streak.toString()]),
+                        ),
+                      ],
+                    ),
                   ),
-            error: (_, __) => const SizedBox(),
-            loading: () => const SizedBox(),
-          ),
+                ),
         ],
         title: Text('new Leaf'),
       ),
       body: goals.when(
         data: (goals) {
           if (goals.isEmpty) {
-            return const Center(child: Text('Crea tu primer objetivo'));
+            return Center(child: Text('first-objetive').tr());
           }
           return ListView.builder(
             itemCount: goals.length,
@@ -52,7 +75,7 @@ class HomeScreen extends ConsumerWidget {
                 scale: goal.completed ? 0.9 : 1,
                 duration: Duration(milliseconds: 300),
                 curve: Curves.easeIn,
-                child: GoalCard(goal: goal, updateHistory: updateHistory),
+                child: GoalCard(goal: goal),
               );
             },
           );
@@ -71,60 +94,34 @@ class HomeScreen extends ConsumerWidget {
 }
 
 class GoalCard extends ConsumerStatefulWidget {
-  final Function(GoalMontly, int) updateHistory;
   final GoalMontly goal;
-  const GoalCard({super.key, required this.goal, required this.updateHistory});
+  const GoalCard({super.key, required this.goal});
 
   @override
   ConsumerState<GoalCard> createState() => _GoalCardState();
 }
 
 class _GoalCardState extends ConsumerState<GoalCard> {
-  late ConfettiController _confettiController;
-
   @override
   void initState() {
     super.initState();
-    _confettiController = ConfettiController(
-      duration: const Duration(seconds: 2),
-    );
   }
 
   @override
   dispose() {
     super.dispose();
-    _confettiController.dispose();
-  }
-
-  final _audio = AudioPlayer();
-  Future<void> _playFeedBack() async {
-    if (await Vibration.hasVibrator() != false) {
-      Vibration.vibrate(duration: 96);
-    }
-    await _audio.play(AssetSource('sounds/victory_trumpet.mp3'));
-  }
-
-  Future<bool> incrementProgress(GoalMontly monthly) async {
-    final isar = IsarService.isar;
-    bool reached = false;
-
-    await isar.writeTxn(() async {
-      monthly.progress++;
-      if (monthly.progress >= monthly.target) {
-        monthly.completed = true;
-        reached = true;
-      }
-      await isar.goalMontlys.put(monthly);
-    });
-    return reached;
   }
 
   @override
   Widget build(BuildContext context) {
+    final bestStreak = widget.goal.goal.value!.bestStreak;
+    final incrementProgress = ref
+        .read(goalsRepositoryProvider)
+        .incrementProgress;
     return Stack(
       children: [
         Card(
-          color: widget.goal.completed ? Colors.green.shade200 : null,
+          color: widget.goal.completed ? Colors.green.shade300 : null,
           elevation: 6,
           child: Padding(
             padding: const EdgeInsets.all(9.0),
@@ -137,15 +134,63 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                       style: TextStyle(fontSize: 22),
                     ),
                     Spacer(),
-                    IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) =>
-                              GoalDialog(goal: widget.goal.goal.value),
-                        );
-                      },
-                      icon: Icon(Icons.more_vert),
+                    bestStreak == 0
+                        ? SizedBox()
+                        : Row(
+                            children: [
+                              Icon(
+                                Icons.local_fire_department_outlined,
+                                color: Colors.orangeAccent,
+                              ),
+                              SizedBox(width: 3),
+                              Text(
+                                plural(
+                                  'best-streak',
+                                  1,
+                                  args: [bestStreak.toString()],
+                                ),
+                              ),
+                            ],
+                          ),
+                    CustomPopup(
+                      barrierColor: Colors.black38,
+                      content: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.purple.shade300,
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      GoalDialog(goal: widget.goal.goal.value),
+                                );
+                              },
+                              icon: Text('Editar'),
+                            ),
+                            IconButton(
+                              onLongPress: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => DeleteGoalDialog(
+                                    goal: widget.goal.goal.value!,
+                                  ),
+                                );
+                              },
+                              onPressed: () {},
+                              icon: Text('Borrar'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      child: Icon(Icons.more_vert),
                     ),
                   ],
                 ),
@@ -163,9 +208,9 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                         child: Row(
                           children: [
-                            Text('Goal'),
+                            Text('goal-label').tr(),
                             SizedBox(width: 30),
-                            Text('Progress'),
+                            Text('progress-label').tr(),
                           ],
                         ),
                       ),
@@ -192,13 +237,37 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                               onPressed: widget.goal.completed
                                   ? null
                                   : () async {
-                                      final reached = await incrementProgress(
-                                        widget.goal,
+                                      ref
+                                          .read(
+                                            notificationMessageProvider
+                                                .notifier,
+                                          )
+                                          .getRandomMessage();
+                                      await incrementProgress(widget.goal, 1);
+                                      ref
+                                          .read(
+                                            goalMessageStateProvider.notifier,
+                                          )
+                                          .reset();
+
+                                      // enviar metodo scheduleNotifications
+                                      LocalNotifications.setScheduledLocalNotification(
+                                        title: widget.goal.goal.value!.name,
+                                        body: ref
+                                            .read(notificationMessageProvider)
+                                            .message
+                                            .tr(),
                                       );
-                                      widget.updateHistory(widget.goal, 1);
-                                      if (reached) {
-                                        _confettiController.play();
-                                        _playFeedBack();
+                                      if (mounted) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MomentumBanner(
+                                                  monthly: widget.goal,
+                                                ),
+                                          ),
+                                        );
                                       }
                                     },
                               icon: Icon(Icons.add),
@@ -211,13 +280,6 @@ class _GoalCardState extends ConsumerState<GoalCard> {
                 ),
               ],
             ),
-          ),
-        ),
-        Center(
-          heightFactor: 20,
-          child: ConfettiWidget(
-            confettiController: _confettiController,
-            blastDirectionality: BlastDirectionality.explosive,
           ),
         ),
       ],

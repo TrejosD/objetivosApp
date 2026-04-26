@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/presentations/providers/goal_form_state_provider.dart';
 
+// este dialog contiene un form para crear un nuevo objetivo de acuerdo al nombre y la meta que desee el usuario
 class GoalDialog extends ConsumerStatefulWidget {
   final Goal? goal;
   const GoalDialog({super.key, this.goal});
@@ -29,7 +31,7 @@ class _CreateGoalDialogState extends ConsumerState<GoalDialog> {
     final notifier = ref.read(goalFormStateProvider.notifier);
 
     return AlertDialog(
-      title: Text(widget.goal == null ? 'Nueva meta' : 'Editar meta'),
+      title: Text(widget.goal == null ? 'new-goal'.tr() : 'edit-goal'.tr()),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -40,7 +42,7 @@ class _CreateGoalDialogState extends ConsumerState<GoalDialog> {
                 TextPosition(offset: state.name.length),
               ),
             decoration: InputDecoration(
-              labelText: 'Nombre',
+              labelText: 'name-label'.tr(),
               errorText: state.nameError,
             ),
           ),
@@ -52,7 +54,7 @@ class _CreateGoalDialogState extends ConsumerState<GoalDialog> {
                 TextPosition(offset: state.target.length),
               ),
             decoration: InputDecoration(
-              labelText: 'Meta mensual',
+              labelText: 'montly-goal-label'.tr(),
               errorText: state.targetError,
             ),
             keyboardType: TextInputType.numberWithOptions(),
@@ -62,7 +64,7 @@ class _CreateGoalDialogState extends ConsumerState<GoalDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text('Cancelar'),
+          child: const Text('dialog-button-cancel').tr(),
         ),
         ElevatedButton(
           onPressed: state.isLoading || (state.hasSumitted && !state.isValid)
@@ -73,7 +75,11 @@ class _CreateGoalDialogState extends ConsumerState<GoalDialog> {
                 },
           child: state.isLoading
               ? CircularProgressIndicator()
-              : Text(widget.goal == null ? 'Crear' : 'Guardar'),
+              : Text(
+                  widget.goal == null
+                      ? 'dialog-button-create'.tr()
+                      : 'dialog-button-submit'.tr(),
+                ),
         ),
       ],
     );

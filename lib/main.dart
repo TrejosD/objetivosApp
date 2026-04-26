@@ -1,43 +1,81 @@
-import 'package:flutter/material.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:objetivos/firebase_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:objetivos/data/db/isar_service.dart';
-import 'package:objetivos/presentations/providers/app_init_provider.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
+import 'package:objetivos/config/local_notifications/local_notifications.dart';
+import 'package:objetivos/config/theme/app_theme.dart';
+
 import 'package:objetivos/presentations/screens/home_screen.dart';
+import 'package:objetivos/data/db/isar_service.dart';
+
+import 'infrastructure/helpers/helpers.dart';
+import 'presentations/providers/providers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // inicializar Isar "Local DB"
   await IsarService.init();
-  runApp(const ProviderScope(child: MyApp()));
+  // inicializar sharedPreferences "Save settings"
+  await SharedPreferencesService.getPreference();
+  // inicializar EasyLocation "Translate app - GetLocation"
+  await EasyLocalization.ensureInitialized();
+  // inicializar dotEnv. "Environment"
+  await dotenv.load(fileName: ".env");
+  // inicializar localNotifications.
+  await LocalNotifications.initializeLocalNotifications();
+  // inicializar FireBase | Notifications services
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(
+    NotificationService.firebaseMessagingBackgroundHandler,
+  );
+  final prefs = SharedPreferencesService.prefs;
+  final String? savedLocale = prefs.getString('locale');
+  runApp(
+    // lenguajes soportados por el app
+    EasyLocalization(
+      supportedLocales: [
+        Locale('es', 'LA'),
+        Locale('en', 'US'),
+        Locale('zh', 'CN'),
+        Locale('ja', 'JPN'),
+      ],
+      path: 'assets/translations',
+      fallbackLocale: Locale('en', 'US'),
+      startLocale: savedLocale != null ? Locale(savedLocale) : null,
+      child: ProviderScope(child: MyApp(prefs: prefs)),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
-  const MyApp({super.key});
+  final SharedPreferences prefs;
+  const MyApp({super.key, required this.prefs});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, ref) {
+    // settings brightness theme.
+    // detecta tema del telefono
+    var brightness = MediaQuery.of(context).platformBrightness;
+    // valor seteado por el usuario "brightness"
+    final bOveride = prefs.getString('brightness');
+
     ref.watch(appInitProvider);
+    ref.read(notificationsServiceProvider).init();
     return MaterialApp(
+      locale: context.locale,
+      supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
+      theme: AppTheme(
+        brightness: brightness,
+        brighnessOveride: bOveride,
+      ).theme(),
       home: const HomeScreen(),
     );
   }

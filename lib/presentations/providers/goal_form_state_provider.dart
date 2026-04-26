@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:objetivos/data/entities/goal.dart';
 import 'package:objetivos/domain/create_initial_montly_goal.dart';
 import 'package:objetivos/presentations/providers/goals_repository_provider.dart';
 
+// servicio que maneja los formularios y sus alertas
 final goalFormStateProvider =
     StateNotifierProvider.autoDispose<GoalFormNotifier, GoalFormState>((ref) {
       return GoalFormNotifier(ref);
@@ -18,12 +20,13 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
     }
   }
 
+  // metodo maneja el espacio donde se ingresa el nombre del objetivo
   void onNameChanged(String value) {
     String? error;
 
     if (state.hasSumitted) {
       if (value.trim().isEmpty) {
-        error = 'El nombre es obligatorio';
+        error = 'mandatory-name-error'.tr();
       }
     }
     state = state.copyWith(name: value, nameError: error);
@@ -34,34 +37,36 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
 
     if (state.hasSumitted) {
       if (int.tryParse(value) == null) {
-        error = 'Meta debe ser un numero valido';
+        error = 'goal-needs-value-number-error'.tr();
       } else if (value.isEmpty) {
-        error = 'Campo obligatorio';
+        error = 'empty-field-error'.tr();
       } else if (int.parse(value) <= 0) {
-        error = 'Meta debe ser mayor a 0';
+        error = 'goal-should-more-than-cero-error'.tr();
       }
     }
     state = state.copyWith(target: value, targetError: error);
   }
 
+  // metodo valida el formulario
   void validateAll() {
     String? nameError;
     String? targetError;
 
     if (state.name.trim().isEmpty) {
-      nameError = 'Campo obligatorio';
+      nameError = 'empty-field-error'.tr();
     }
     if (state.target.isEmpty) {
-      targetError = 'Campo obligatorio';
+      targetError = 'empty-field-error'.tr();
     } else if (int.tryParse(state.target) == null) {
-      targetError = 'Meta debe ser un numero valido';
+      targetError = 'goal-needs-value-number-error'.tr();
     } else if (int.parse(state.target) <= 0) {
-      targetError = 'Meta debe ser mayor a 0';
+      targetError = 'goal-should-more-than-cero-error'.tr();
     }
 
     state = state.copyWith(nameError: nameError, targetError: targetError);
   }
 
+  // metodo envia el formulario y guarda en el DB
   Future<bool> submitForm(Goal? goal) async {
     state = state.copyWith(hasSumitted: true);
     validateAll();
@@ -84,6 +89,7 @@ class GoalFormNotifier extends StateNotifier<GoalFormState> {
   }
 }
 
+// estado del formulario
 class GoalFormState {
   final String name;
   final String? nameError;
