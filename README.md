@@ -38,3 +38,7 @@ dart run change_app_package_name:main "com.tunombre.appname"
 ```
 dart run flutter_launcher_icons
 ```
+
+## Release
+
+- Cambiar el numero de version en el pupspec.yaml
